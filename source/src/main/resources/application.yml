@@ -1,0 +1,42 @@
+spring:
+  jpa:
+    generate-ddl: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/world?useSSL=false
+    username: root
+    password: root
+    hikari:
+        pool-name: parserDS
+        connection-timeout: 600000
+        idle-timeout: 60000
+        minimum-idle: 10
+        maximum-pool-size: 200
+        connection-test-query: select 1
+        register-mbeans: true
+
+
+date.format:
+  args: yyyy-MM-dd.HH:mm:ss     # date format for 'startDate' argument
+  file: yyyy-MM-dd HH:mm:ss.SSS # date format for request date field in access log file
+
+# access log file config
+line:
+  delimiter: \| # it's actually | , but the \ is needed here
+  parts: # zero based:
+    date: 0     # date    field starts at position 0 in access log file
+    address: 1  # address field starts at position 1 in access log file
+    data: 2     # other fields are considered as one piece of data
+
+# console log config
+logging.level:
+  org.*: ERROR
+  com.zaxxer: ERROR
+
+# DB config
+db:
+  enabled: true   # should the app write data to database?
+# make database writes asynchronous(non-blocking) to save time?
+# remember that this by setting this property to 'true', records are written unordered in request table
+  async: true
+  batch-count: 500 # record count in every batch insert
+
